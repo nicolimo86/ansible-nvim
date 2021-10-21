@@ -1,11 +1,11 @@
 ---
 - name: Clone nvim
   git:
-    dest: "/tmp/nvim"
-    repo: https://github.com/neovim/neovim.git
+    dest: "{{ nvim_clone_path }}"
+    repo: "{{ nvim_git_url }}"
     update: yes
     accept_hostkey: yes
-    version: master
+    version: stable
 
 - name: Install building tools
   package:
@@ -27,15 +27,14 @@
 - name: Make clean
   shell:
     cmd: make distclean
-    chdir: /tmp/nvim
+    chdir: "{{ nvim_clone_path }}"
 
 - name: Make build
   shell:
     cmd: make CMAKE_BUILD_TYPE=Release
-    chdir: /tmp/nvim
+    chdir: "{{ nvim_clone_path }}"
 
 - name: Make install
   shell:
     cmd: make install
-    chdir: /tmp/nvim
-  become: yes
+    chdir: "{{ nvim_clone_path }}"
