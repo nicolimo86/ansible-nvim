@@ -5,7 +5,7 @@
     repo: "{{ nvim_git_url }}"
     update: yes
     accept_hostkey: yes
-    version: stable
+    version: "{{ nvim_branch }}"
 
 - name: Install building tools
   package:
