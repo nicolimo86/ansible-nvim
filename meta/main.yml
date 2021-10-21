@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: me
+  description: "Nvim installation for Ubuntu"
+  license: MIT
+  min_ansible_version: 1.9.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - development
+    - nvim
+dependencies: []

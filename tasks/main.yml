@@ -1,0 +1,41 @@
+---
+- name: Clone nvim
+  git:
+    dest: "/tmp/nvim"
+    repo: https://github.com/neovim/neovim.git
+    update: yes
+    accept_hostkey: yes
+    version: master
+
+- name: Install building tools
+  package:
+    name:
+      - gettext
+      - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake
+      - make
+      - g++
+      - pkg-config
+      - unzip
+      - curl
+    state: latest
+  become: yes
+
+- name: Make clean
+  shell:
+    cmd: make distclean
+    chdir: /tmp/nvim
+
+- name: Make build
+  shell:
+    cmd: make CMAKE_BUILD_TYPE=Release
+    chdir: /tmp/nvim
+
+- name: Make install
+  shell:
+    cmd: make install
+    chdir: /tmp/nvim
+  become: yes
