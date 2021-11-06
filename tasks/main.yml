@@ -42,3 +42,4 @@
   shell:
     cmd: make install
     chdir: "{{ nvim_clone_path }}"
+  become: yes
