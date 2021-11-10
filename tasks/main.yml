@@ -1,19 +1,19 @@
 ---
-- name: Clone nvim
-  git:
-    dest: "{{ nvim_clone_path }}"
-    repo: "{{ nvim_git_url }}"
-    update: yes
-    accept_hostkey: yes
-    version: "{{ nvim_branch }}"
 
 - name: Update apt cache
   apt: update_cache=yes cache_valid_time=600
   become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Update apt cache
+  yum: name=* state=latest
+  become: yes
+  when: ansible_os_family == 'RedHat'
 
 - name: Install building tools
   package:
     name:
+      - git
       - gettext
       - libtool
       - libtool-bin
@@ -27,6 +27,36 @@
       - curl
     state: latest
   become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install building tools
+  package:
+    name:
+      - git
+      - ninja-build
+      - libtool
+      - autoconf
+      - automake
+      - cmake
+      - gcc
+      - gcc-c++
+      - make
+      - pkgconfig
+      - unzip
+      - patch
+      - gettext
+      - curl
+    state: latest
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Clone nvim
+  git:
+    dest: "{{ nvim_clone_path }}"
+    repo: "{{ nvim_git_url }}"
+    update: yes
+    accept_hostkey: yes
+    version: "{{ nvim_branch }}"
 
 - name: Make clean
   shell:
