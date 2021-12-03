@@ -10,8 +10,9 @@
 - name: Update apt cache
   apt: update_cache=yes cache_valid_time=600
   become: yes
+  when: ansible_os_family == 'Debian'
 
-- name: Install building tools
+- name: Install building tools (Debian)
   package:
     name:
       - gettext
@@ -27,6 +28,26 @@
       - curl
     state: latest
   become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install building tools (RedHat)
+  package:
+    name:
+      - ninja-build
+      - libtool autoconf
+      - automake
+      - cmake
+      - gcc
+      - gcc-c++
+      - make
+      - pkgconfig
+      - unzip
+      - patch
+      - gettext
+      - curl
+    state: latest
+  become: yes
+  when: ansible_os_family == 'RedHat'
 
 - name: Make clean
   shell:
@@ -42,4 +63,3 @@
   shell:
     cmd: make install
     chdir: "{{ nvim_clone_path }}"
-  become: yes
