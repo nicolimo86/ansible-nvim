@@ -1,5 +1,5 @@
 ---
 
 nvim_clone_path: /tmp/nvim
-nvim_branch: stable
+nvim_branch: v0.6.0
 nvim_git_url: https://github.com/neovim/neovim.git
