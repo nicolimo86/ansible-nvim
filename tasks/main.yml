@@ -5,7 +5,7 @@
   become: yes
   when: ansible_os_family == 'Debian'
 
-- name: Update apt cache
+- name: Update yum cache
   yum: name=* state=latest
   become: yes
   when: ansible_os_family == 'RedHat'
@@ -32,13 +32,14 @@
 - name: Install building tools (RedHat)
   package:
     name:
+      - git
       - ninja-build
       - libtool
       - autoconf
       - automake
-      - cmake
       - gcc
       - gcc-c++
+      - cmake
       - make
       - pkgconfig
       - unzip
@@ -47,6 +48,13 @@
       - curl
     state: latest
   become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: install cmake (Amazon Linux)
+  pip:
+    name: cmake
+    state: present
+    executable: pip3.7
   when: ansible_os_family == 'RedHat'
 
 - name: Clone nvim

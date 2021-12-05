@@ -4,14 +4,14 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: ubuntu1804
-    image: geerlingguy/docker-ubuntu1804-ansible:latest
-    pre_build_image: true
-  - name: ubuntu2004
-    image: geerlingguy/docker-ubuntu2004-ansible:latest
-    pre_build_image: true
-  - name: amazonlinux
-    image: geerlingguy/docker-amazonlinux2-ansible:latest
+  # - name: ubuntu2004
+  #   image: "geerlingguy/docker-ubuntu2004-ansible:latest"
+  #   pre_build_image: true
+  # - name: amazonlinux
+  #   image: "geerlingguy/docker-amazonlinux2-ansible:latest"
+  #   pre_build_image: true
+  - name: instance
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
     pre_build_image: true
 provisioner:
   name: ansible
@@ -19,5 +19,19 @@ provisioner:
   config_options:
     defaults:
       callback_whitelist: profile_tasks, timer, yaml
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence
+    - side_effect
+    - verify
+    - destroy
 verifier:
   name: ansible
